@@ -72,8 +72,8 @@ void truchetPoint(CvArr* img, void *state, int x, int y, int tileW, int tileH){
 // Modified Truchet based on 2 arc patterns
 // (http://mathworld.wolfram.com/TruchetTiling.html)
 void truchetArc(CvArr* img, void *state, int x, int y, int tileW, int tileH){
-  int thickness = 3;
   truchetGenericState *astate = (truchetGenericState *)state;
+  int thickness = astate->thickness;
   CvScalar color = astate->fgColor;
   int len = tileW, // TODO: generalize this
       type = cvRandInt(&rng) % 4;
@@ -120,11 +120,12 @@ truchetFilledArcState *truchetFilledArcChangeState(truchetFilledArcState *state,
  *
  */
 void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tileH){
-  int thickness = -1, len = tileW; // TODO: should generalize len to tileW/H
   truchetFilledArcState *astate = truchetFilledArcChangeState((truchetFilledArcState *)state, x, y);
-  CvScalar color1 = astate->fgColor, 
+  CvScalar color1 = astate->generic.fgColor, 
            color2 = astate->bgColor;
-  int type = astate->piece; 
+  int thickness = astate->generic.thickness, 
+    len = tileW, // TODO: should generalize len to tileW/H
+    type = astate->piece; 
 
   if (type == 0) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);

@@ -13,15 +13,16 @@
  */
 typedef struct {
   CvScalar fgColor;
+  int thickness;
 } truchetGenericState;
 
 /**
- * For filled arc's, need to alternate between 0/1 and 2/3 (was 0/3 and 1/2)
+ * For filled arc's, need to alternate between 0/3 and 1/2
  * also need to keep track of first piece on prev row, because need to alternate
  * with that when the next row starts
  */
 typedef struct {
-  CvScalar fgColor;
+  truchetGenericState generic;
   int lastRow;
   int piece;
   CvScalar bgColor;

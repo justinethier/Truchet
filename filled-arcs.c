@@ -20,7 +20,7 @@ void draw(CvArr* img, int width, int height) {
     cvSet(img, cvScalar(255, 255, 255, 0), NULL);
 
     truchetFilledArcState state = {
-        cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
+        {cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256), 3},
         -1, -1, cvScalar(cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)};
 
     // Mixing these two gives a nice effect
