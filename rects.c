@@ -23,7 +23,7 @@ void draw(CvArr* img, int width, int height) {
         // Color
         cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)
     };
-    fillTiles(img, (void *) &state1, width, height, TILE_WIDTH, TILE_HEIGHT, &truchetPoint);
+    fillTiles(img, (void *) &state1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetPoint);
 }
 
 int main( int argc, char** argv ) {

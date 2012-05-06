@@ -155,14 +155,10 @@ void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tile
 }
 
 // Fill an entire image using given function
-//
-// TODO: all vars should to into state
-//
-void fillTiles(CvArr* img, void *state, int width, int height, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int))){
-    int x = 0, y = 0;
-
-    for (y = tileHeight - tileHeight * 2; y < height + tileHeight; y += tileHeight){
-        for (x = tileWidth - tileWidth * 2; x < width + tileWidth; x += tileWidth){
+void fillTiles(CvArr* img, void *state, int width, int height, int x, int y, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int))){
+    int xinit = x, yinit = y;
+    for (y = yinit + tileHeight - tileHeight * 2; y < height + tileHeight; y += tileHeight){
+        for (x = xinit + tileWidth - tileWidth * 2; x < width + tileWidth; x += tileWidth){
             (*funcPtr)(img, state, x, y, tileWidth, tileHeight);
         }
     }

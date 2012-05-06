@@ -27,7 +27,7 @@ void draw(CvArr* img, int width, int height) {
         bgColor
     };
 
-    fillTiles(img, (void *) &state, width, height, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
+    fillTiles(img, (void *) &state, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 }
 
 int main( int argc, char** argv ) {
