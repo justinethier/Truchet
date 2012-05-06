@@ -99,11 +99,21 @@ truchetFilledArcState *truchetFilledArcChangeState(truchetFilledArcState *state,
     }
     // Started another row
     else if (x == 0){
-        astate->piece = (cvRandInt(&rng)%2 + ((astate->lastRow > 1) ? 2 : 0));
+        //astate->piece = (cvRandInt(&rng)%2 + ((astate->lastRow > 1) ? 0 : 2));
+        if (astate->lastRow == 0 || astate->lastRow == 3){
+            astate->lastRow = astate->piece = ((cvRandInt(&rng)%2)) + 1;
+        } else {
+            astate->lastRow = astate->piece = ((cvRandInt(&rng)%2)) ? 0 : 3;
+        }
     }
     // Just another piece
     else {
-        astate->piece = (cvRandInt(&rng)%2 + ((astate->piece > 1) ? 2 : 0));
+        //astate->piece = (cvRandInt(&rng)%2 + ((astate->piece > 1) ? 0 : 2));
+        if (astate->piece == 0 || astate->piece == 3){
+            astate->piece = ((cvRandInt(&rng)%2)) + 1;
+        } else {
+            astate->piece = ((cvRandInt(&rng)%2)) ? 0 : 3;
+        }
     }
   }
   return state;
@@ -118,22 +128,22 @@ void truchetFilledArc(CvArr* img, void *state, int x, int y, int len, int type, 
   CvScalar color2 = astate->bgColor;
 
   // TODO: longer-term, state should replace type
-  type = 0; //astate->piece; 
+  type = astate->piece; 
 
-  if (type == 0) { // Was 2
-    cvRectangle(img, cvPoint(x, y), cvPoint(len, len), color2, CV_FILLED, 8, 0);
+  if (type == 0) {
+    cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color1, thickness, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color1, thickness, CV_AA, 0);
   } else if (type == 1) {
-    cvRectangle(img, cvPoint(x, y), cvPoint(len, len), color1, CV_FILLED, 8, 0);
+    cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color1, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color2, thickness, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color2, thickness, CV_AA, 0);
-  } else if (type == 2) { // Was 2
-    cvRectangle(img, cvPoint(x, y), cvPoint(len, len), color2, CV_FILLED, 8, 0);
+  } else if (type == 2) {
+    cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color1, thickness, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color1, thickness, CV_AA, 0);
   } else {
-    cvRectangle(img, cvPoint(x, y), cvPoint(len, len), color1, CV_FILLED, 8, 0);
+    cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color1, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color2, thickness, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color2, thickness, CV_AA, 0);
   }
@@ -146,13 +156,12 @@ void fill(CvArr* img, void *state, int width, int height, void (funcPtr(CvArr*, 
 
 //    IplImage *imgTmp = cvCreateImage(cvGetSize(img), 8, 1);
 //    cvSet(imgTmp, cvScalar(255, 255, 255, 0), NULL);
-//
-    for (x = len; x < len * 2; x += len){
-//    for (x = len - len*2; x < width + len; x += len){
-//        for (y = len - len*2; y < height + len; y += len){
+
+    for (y = len - len*2; y < height + len; y += len){
+        for (x = len - len*2; x < width + len; x += len){
             (*funcPtr)(img, state, x, y, len, rand()%4, color);
 //            (*funcPtr)(imgTmp, x, y, len, rand()%4, color);
-//        }
+        }
     }
 
 //    OverlayImage(img, imgTmp, width, height, cvPoint(0, 0), cvScalar(0.7, 0.7, 0.7, 0.7), cvScalar(0.3, 0.3, 0.3, 0.3));
@@ -167,11 +176,13 @@ void draw(CvArr* img, int width, int height) {
     //cvRectangle(img, cvPoint(0, 0), cvPoint(width, height), cvScalar(255,255,255,0), CV_FILLED, 8, 0);
     cvSet(img, cvScalar(255, 255, 255, 0), NULL);
 
-//    fill(img, NULL, width, height, &truchetPoint);
-//    fill(img, NULL, width, height, &truchetArc);
-    
     truchetFilledArcState state = {-1, -1, cvScalar(cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)};
+
+    // Mixing these two gives a nice effect
     fill(img, (void *) &state, width, height, &truchetFilledArc);
+    fill(img, NULL, width, height, &truchetArc);
+
+//    fill(img, NULL, width, height, &truchetPoint);
 }
 
 int main( int argc, char** argv ) {
