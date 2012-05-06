@@ -129,28 +129,28 @@ void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tile
 
   if (type == 0) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color1, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color1, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color1, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color1, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
   } else if (type == 1) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color1, CV_FILLED, 8, 0);
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color2, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color2, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color2, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color2, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
   } else if (type == 2) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color1, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color1, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color1, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color1, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
   } else {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color1, CV_FILLED, 8, 0);
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color2, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color2, thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, cvScalar(255, 255, 255, 0), 3, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color2, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color2, -1, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
   }
 }
 

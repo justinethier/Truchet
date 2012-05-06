@@ -3,7 +3,8 @@
 
 const int WIDTH = 320;
 const int HEIGHT= 240;
-const int TILE_WIDTH = 10;
-const int TILE_HEIGHT = 10;
+const int TILE_WIDTH = 5;
+const int TILE_HEIGHT = 5;
+const int LINE_THICKNESS = 1;
 
 #endif

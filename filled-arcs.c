@@ -15,15 +15,18 @@ void draw(CvArr* img, int width, int height) {
     truchetInit();
 
     CvRNG rng = truchetGetRNG();
+    CvScalar fgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
+             bgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
 
     // White background
     cvSet(img, cvScalar(255, 255, 255, 0), NULL);
 
     truchetFilledArcState state = {
-        {cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256), 3},
-        -1, -1, cvScalar(cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)};
+        {fgColor, LINE_THICKNESS},
+        -1, -1, // State machine
+        bgColor
+    };
 
-    // Mixing these two gives a nice effect
     fillTiles(img, (void *) &state, width, height, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 }
 
