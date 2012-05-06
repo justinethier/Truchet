@@ -41,8 +41,12 @@ void OverlayImage(IplImage* src, IplImage* overlay, int width, int height, CvPoi
 
 // Original Truchet based on 4 triangular patterns
 // (http://mathworld.wolfram.com/TruchetTiling.html)
-void truchetPoint(CvArr* img, void *state, int x, int y, int len, int type, CvScalar color){
+void truchetPoint(CvArr* img, void *state, int x, int y, int tileW, int tileH){
+  truchetGenericState *astate = (truchetGenericState *)state;
   CvPoint ptt[3];
+  CvScalar color = astate->fgColor;
+  int len = tileW, // TODO: generalize this
+      type = cvRandInt(&rng) % 4;
 
   if (type == 0) {
     ptt[0] = cvPoint(x, y); // 1
@@ -67,8 +71,12 @@ void truchetPoint(CvArr* img, void *state, int x, int y, int len, int type, CvSc
 
 // Modified Truchet based on 2 arc patterns
 // (http://mathworld.wolfram.com/TruchetTiling.html)
-void truchetArc(CvArr* img, void *state, int x, int y, int len, int type, CvScalar color){
+void truchetArc(CvArr* img, void *state, int x, int y, int tileW, int tileH){
   int thickness = 3;
+  truchetGenericState *astate = (truchetGenericState *)state;
+  CvScalar color = astate->fgColor;
+  int len = tileW, // TODO: generalize this
+      type = cvRandInt(&rng) % 4;
 
   if ((type % 2) == 0) {
     cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color, thickness, CV_AA, 0);
@@ -111,13 +119,12 @@ truchetFilledArcState *truchetFilledArcChangeState(truchetFilledArcState *state,
 /**
  *
  */
-void truchetFilledArc(CvArr* img, void *state, int x, int y, int len, int type, CvScalar color1){
-  int thickness = -1;
+void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tileH){
+  int thickness = -1, len = tileW; // TODO: should generalize len to tileW/H
   truchetFilledArcState *astate = truchetFilledArcChangeState((truchetFilledArcState *)state, x, y);
-  CvScalar color2 = astate->bgColor;
-
-  // TODO: longer-term, state should replace type
-  type = astate->piece; 
+  CvScalar color1 = astate->fgColor, 
+           color2 = astate->bgColor;
+  int type = astate->piece; 
 
   if (type == 0) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
@@ -150,13 +157,12 @@ void truchetFilledArc(CvArr* img, void *state, int x, int y, int len, int type, 
 //
 // TODO: all vars should to into state
 //
-void fill(CvArr* img, void *state, int width, int height, void (funcPtr(CvArr*, void*, int, int, int, int, CvScalar))){
-    int x = 0, y = 0, len = 30;
-    CvScalar color = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
+void fillTiles(CvArr* img, void *state, int width, int height, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int))){
+    int x = 0, y = 0;
 
-    for (y = len - len*2; y < height + len; y += len){
-        for (x = len - len*2; x < width + len; x += len){
-            (*funcPtr)(img, state, x, y, len, rand()%4, color);
+    for (y = tileHeight - tileHeight * 2; y < height + tileHeight; y += tileHeight){
+        for (x = tileWidth - tileWidth * 2; x < width + tileWidth; x += tileWidth){
+            (*funcPtr)(img, state, x, y, tileWidth, tileHeight);
         }
     }
 }

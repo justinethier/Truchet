@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "opencv/cv.h"
 #include "opencv/highgui.h"
+#include "global-params.h"
 #include "truchet.h"
 #include "util.h"
 
@@ -18,17 +19,14 @@ void draw(CvArr* img, int width, int height) {
     // White background
     cvSet(img, cvScalar(255, 255, 255, 0), NULL);
 
-    truchetFilledArcState state = {-1, -1, cvScalar(cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)};
+    truchetFilledArcState state = {
+        cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
+        -1, -1, cvScalar(cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)};
 
     // Mixing these two gives a nice effect
-    fill(img, (void *) &state, width, height, &truchetFilledArc);
-    //fill(img, NULL, width, height, &truchetArc);
-
-//    fill(img, NULL, width, height, &truchetPoint);
+    fillTiles(img, (void *) &state, width, height, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 }
 
 int main( int argc, char** argv ) {
-    const int WIDTH = 1200;
-    const int HEIGHT= 1020;
     drawToScreen(draw, WIDTH, HEIGHT);
 }

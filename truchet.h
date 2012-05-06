@@ -9,6 +9,25 @@
 #include "opencv/highgui.h"
 
 /**
+ * Generic state information for any algorithm
+ */
+typedef struct {
+  CvScalar fgColor;
+} truchetGenericState;
+
+/**
+ * For filled arc's, need to alternate between 0/1 and 2/3 (was 0/3 and 1/2)
+ * also need to keep track of first piece on prev row, because need to alternate
+ * with that when the next row starts
+ */
+typedef struct {
+  CvScalar fgColor;
+  int lastRow;
+  int piece;
+  CvScalar bgColor;
+} truchetFilledArcState;
+
+/**
  * This function must be called prior to using the module
  */
 void truchetInit();
@@ -23,31 +42,20 @@ void OverlayImage(IplImage* src, IplImage* overlay, int width, int height, CvPoi
 
 // Original Truchet based on 4 triangular patterns
 // (http://mathworld.wolfram.com/TruchetTiling.html)
-void truchetPoint(CvArr* img, void *state, int x, int y, int len, int type, CvScalar color);
+void truchetPoint(CvArr* img, void *state, int x, int y, int, int );
 
 // Modified Truchet based on 2 arc patterns
 // (http://mathworld.wolfram.com/TruchetTiling.html)
-void truchetArc(CvArr* img, void *state, int x, int y, int len, int type, CvScalar color);
-
-/**
- * For filled arc's, need to alternate between 0/1 and 2/3 (was 0/3 and 1/2)
- * also need to keep track of first piece on prev row, because need to alternate
- * with that when the next row starts
- */
-typedef struct {
-  int lastRow;
-  int piece;
-  CvScalar bgColor;
-} truchetFilledArcState;
+void truchetArc(CvArr* img, void *state, int x, int y, int, int );
 
 truchetFilledArcState *truchetFilledArcChangeState(truchetFilledArcState *state, int x, int y);
 
 /**
  *
  */
-void truchetFilledArc(CvArr* img, void *state, int x, int y, int len, int type, CvScalar color1);
+void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tileH);
 
 // Fill an entire image using given function
-void fill(CvArr* img, void *state, int width, int height, void (funcPtr(CvArr*, void*, int, int, int, int, CvScalar)));
+void fillTiles(CvArr* img, void *state, int width, int height, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int)));
 
 #endif
