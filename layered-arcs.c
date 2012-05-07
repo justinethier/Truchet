@@ -12,7 +12,7 @@
 // All custom drawing goes here
 void draw(CvArr* img, int width, int height) {
     // Initialize our library
-    truchetInit();
+    truchetInit( time(NULL) );
 
     CvRNG rng = truchetGetRNG();
     CvScalar fgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),

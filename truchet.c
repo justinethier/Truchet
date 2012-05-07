@@ -17,8 +17,8 @@ CvRNG rng;
 /**
  * This function must be called prior to using the module
  */
-void truchetInit(){
-    rng = cvRNG( time(NULL) );
+void truchetInit(int64 seed){
+    rng = cvRNG( seed );
 }
 
 CvRNG truchetGetRNG(){

@@ -32,7 +32,7 @@ typedef struct {
 /**
  * This function must be called prior to using the module
  */
-void truchetInit();
+void truchetInit(int64);
 
 /**
  * Return the RNG
