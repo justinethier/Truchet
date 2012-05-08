@@ -3,6 +3,9 @@ lib: truchet.c truchet.h
 	gcc -c truchet.c -o truchet.o
 util: util.c util.h global-params.h
 	gcc -c util.c -o util.o
+four-arcs: util lib four-arcs.c
+	gcc -c four-arcs.c -o four-arcs.o
+	gcc four-arcs.o truchet.o util.o -o four-arcs -lcxcore -lcv -lhighgui
 arcs: util lib arcs.c
 	gcc -c arcs.c -o arcs.o
 	gcc arcs.o truchet.o util.o -o arcs -lcxcore -lcv -lhighgui
