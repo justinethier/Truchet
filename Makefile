@@ -1,4 +1,5 @@
-all: util lib rects arcs filled-arcs layered-arcs
+all: util lib rects arcs filled-arcs four-arcs layered-arcs
+
 lib: truchet.c truchet.h
 	gcc -c truchet.c -o truchet.o
 util: util.c util.h global-params.h
