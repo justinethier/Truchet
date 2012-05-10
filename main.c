@@ -6,6 +6,8 @@
 #include "opencv/cv.h"
 #include "opencv/highgui.h"
 
+CvRNG rng;
+
 // Transparent Overlay from http://www.aishack.in/2010/07/transparent-image-overlays-in-opencv/
 void OverlayImage(IplImage* src, IplImage* overlay, int width, int height, CvPoint location, CvScalar S, CvScalar D){
   int x, y, i;
@@ -16,8 +18,14 @@ void OverlayImage(IplImage* src, IplImage* overlay, int width, int height, CvPoi
       CvScalar source = cvGet2D(src, y+location.y, x+location.x);
       CvScalar over = cvGet2D(overlay, y, x);
       CvScalar merged;
-      for(i=0;i<4;i++)
-        merged.val[i] = (S.val[i]*source.val[i]+D.val[i]*over.val[i]);
+      for(i=0;i<4;i++){
+//        if (over.val[i] > 0){
+            merged.val[i] = (S.val[i]*source.val[i]+D.val[i]*over.val[i]);
+/*        } else {
+            merged.val[i] = source.val[i];
+        }
+*/
+      }
       cvSet2D(src, y+location.y, x+location.x, merged);
     }
   }
@@ -52,21 +60,33 @@ void truchetPoint(CvArr* img, int x, int y, int len, int type, CvScalar color){
 // Modified Truchet based on 2 arc patterns
 // (http://mathworld.wolfram.com/TruchetTiling.html)
 void truchetArc(CvArr* img, int x, int y, int len, int type, CvScalar color){
-  CvPoint ptt[3];
+  int thickness = 3;
 
   if ((type % 2) == 0) {
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color, 1, 8, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color, 1, 8, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color, thickness, CV_AA, 0);
   } else {
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color, 1, 8, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color, 1, 8, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color, thickness, CV_AA, 0);
+  }
+}
+
+void truchetFilledArc(CvArr* img, int x, int y, int len, int type, CvScalar color){
+  int thickness = 3;
+
+  if ((type % 2) == 0) {
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color, thickness, CV_AA, 0);
+  } else {
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color, thickness, CV_AA, 0);
   }
 }
 
 // Fill an entire image using given function
 void fill(CvArr* img, int width, int height, void (funcPtr(CvArr*, int, int, int, int, CvScalar))){
     int x = 0, y = 0, len = 20;
-    CvScalar color = cvScalar(rand()%256, rand()%256, rand()%256, rand()%256);
+    CvScalar color = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256); //rand()%256, rand()%256, rand()%256, rand()%256);
 
     IplImage *imgTmp = cvCreateImage(cvGetSize(img), 8, 1);
 //    cvSet(imgTmp, cvScalar(255, 255, 255, 0), NULL);
@@ -74,7 +94,7 @@ void fill(CvArr* img, int width, int height, void (funcPtr(CvArr*, int, int, int
     for (x = len - len*2; x < width + len; x += len){
         for (y = len - len*2; y < height + len; y += len){
             (*funcPtr)(img, x, y, len, rand()%4, color);
-// TODO:            (*funcPtr)(imgTmp, x, y, len, rand()%4, color);
+//            (*funcPtr)(imgTmp, x, y, len, rand()%4, color);
         }
     }
 
@@ -90,10 +110,7 @@ void draw(CvArr* img, int width, int height) {
     //cvRectangle(img, cvPoint(0, 0), cvPoint(width, height), cvScalar(255,255,255,0), CV_FILLED, 8, 0);
     cvSet(img, cvScalar(255, 255, 255, 0), NULL);
 
-    fill(img, width, height, &truchetArc);
-    fill(img, width, height, &truchetArc);
-    fill(img, width, height, &truchetArc);
-    fill(img, width, height, &truchetArc);
+    fill(img, width, height, &truchetFilledArc);
 }
 
 int main( int argc, char** argv ) {
@@ -101,6 +118,7 @@ int main( int argc, char** argv ) {
     const int HEIGHT= 600;
 
     srand((unsigned)time(NULL));
+    rng = cvRNG( time(NULL) );
 
     /* data structure for the image */
     IplImage *img = 0;
