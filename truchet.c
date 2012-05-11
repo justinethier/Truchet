@@ -160,7 +160,7 @@ void fillTiles(CvArr* img, void *state, int width, int height, int x, int y, int
 
 
     // TODO: don't want an overlay each time, need to make it an option or something
-    IplImage *imgTmp = cvCreateImage(cvGetSize(img), 8, 1);
+    IplImage *imgTmp = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 3);
     for (y = yinit + tileHeight - tileHeight * 2; y < height + tileHeight; y += tileHeight){
         for (x = xinit + tileWidth - tileWidth * 2; x < width + tileWidth; x += tileWidth){
             (*funcPtr)(imgTmp, state, x, y, tileWidth, tileHeight);
