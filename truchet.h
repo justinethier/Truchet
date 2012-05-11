@@ -26,6 +26,7 @@ typedef struct {
   int lastRow;
   int piece;
   CvScalar bgColor;
+  CvScalar strokeColor;
 } truchetFilledArcState;
 
 /**

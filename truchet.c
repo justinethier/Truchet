@@ -27,12 +27,7 @@ void OverlayImage(IplImage* src, IplImage* overlay, int width, int height, CvPoi
       CvScalar over = cvGet2D(overlay, y, x);
       CvScalar merged;
       for(i=0;i<4;i++){
-//        if (over.val[i] > 0){
-            merged.val[i] = (S.val[i]*source.val[i]+D.val[i]*over.val[i]);
-/*        } else {
-            merged.val[i] = source.val[i];
-        }
-*/
+        merged.val[i] = (S.val[i]*source.val[i]+D.val[i]*over.val[i]);
       }
       cvSet2D(src, y+location.y, x+location.x, merged);
     }
@@ -122,7 +117,8 @@ truchetFilledArcState *truchetFilledArcChangeState(truchetFilledArcState *state,
 void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tileH){
   truchetFilledArcState *astate = truchetFilledArcChangeState((truchetFilledArcState *)state, x, y);
   CvScalar color1 = astate->generic.fgColor, 
-           color2 = astate->bgColor;
+           color2 = astate->bgColor,
+           strokeColor = astate->strokeColor;
   int thickness = astate->generic.thickness, 
     len = tileW, // TODO: should generalize len to tileW/H
     type = astate->piece; 
@@ -131,33 +127,32 @@ void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tile
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color1, -1, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color1, -1, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, strokeColor, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, strokeColor, thickness, CV_AA, 0);
   } else if (type == 1) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color1, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, color2, -1, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, color2, -1, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y + len), cvSize(len/2, len/2), 0.0, 0.0, 90.0, strokeColor, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y), cvSize(len/2, len/2), 0.0, 180.0, 270.0, strokeColor, thickness, CV_AA, 0);
   } else if (type == 2) {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color2, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color1, -1, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color1, -1, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, strokeColor, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, strokeColor, thickness, CV_AA, 0);
   } else {
     cvRectangle(img, cvPoint(x, y), cvPoint(x + len, y + len), color1, CV_FILLED, 8, 0);
     cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, color2, -1, CV_AA, 0);
     cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, color2, -1, CV_AA, 0);
-    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
-    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, cvScalar(255, 255, 255, 0), thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x, y), cvSize(len/2, len/2), 0.0, 270.0, 360.0, strokeColor, thickness, CV_AA, 0);
+    cvEllipse(img, cvPoint(x + len, y + len), cvSize(len/2, len/2), 0.0, 90.0, 180.0, strokeColor, thickness, CV_AA, 0);
   }
 }
 
 // Fill an entire image using given function
 void fillTiles(CvArr* img, void *state, int width, int height, int x, int y, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int))){
     int xinit = x, yinit = y;
-
 
     // TODO: don't want an overlay each time, need to make it an option or something
     IplImage *imgTmp = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 3);
@@ -166,8 +161,7 @@ void fillTiles(CvArr* img, void *state, int width, int height, int x, int y, int
             (*funcPtr)(imgTmp, state, x, y, tileWidth, tileHeight);
         }
     }
-    // OverlayImage(img, imgTmp, width, height, cvPoint(0, 0), cvScalar(0.7, 0.7, 0.7, 0.7), cvScalar(0.3, 0.3, 0.3, 0.3));
-    //OverlayImage(img, imgTmp, width, height, cvPoint(0, 0), cvScalar(1, 1, 1, 1), cvScalar(1, 1, 1, 1));
+
     OverlayImage(img, imgTmp, width, height, cvPoint(0, 0), cvScalar(0.5, 0.5, 0.5, 0.5), cvScalar(0.5, 0.5, 0.5, 0.5));
     cvReleaseImage( &imgTmp );
 }
