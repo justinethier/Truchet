@@ -16,4 +16,4 @@ rects: util lib rects.c
 	gcc -c rects.c -o rects.o
 	gcc rects.o truchet.o util.o -o rects -lcxcore -lcv -lhighgui
 clean:
-	rm -f rects arcs filled-arcs layered-arcs main *.o *.so
+	rm -f rects arcs filled-arcs layered-arcs main *.o *.so out.png

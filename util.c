@@ -23,6 +23,9 @@ int drawToScreen(void drawFunc(CvArr*, int, int), const int WIDTH, const int HEI
    
     /* display the image */
     cvShowImage( "image", img );
+
+    /* Save image file */
+    cvSaveImage( "out.png", img, NULL );
    
     /* wait until user press a key */
     cvWaitKey(0);
