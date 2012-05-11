@@ -30,13 +30,6 @@ void draw(CvArr* img, int width, int height) {
     };
 
     fillTiles(img, (void *) &state, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
-
-
-    // TODO: Experimenting with an overlay
-    // TODO: try this in paint.net (layer blending) to get some ideas
-state.generic.fgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
-state.bgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
-    fillTiles(img, (void *) &state, width, height, 20, 20, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 }
 
 int main( int argc, char** argv ) {
