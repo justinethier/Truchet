@@ -3,6 +3,15 @@
  */
 #include "truchet.h"
 
+
+// TODO: performance enhancement (?)
+// just draw all possible tiles as a sub-raster. Then, 
+// copy the requested tile instead of recomputing it each time
+//
+// TBD: this might not work if slight variations are made
+// each time to the tiles, even for 'identical' ones
+// (eg: sine wave)
+
 CvRNG rng;
 
 /**
