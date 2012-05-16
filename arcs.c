@@ -24,12 +24,12 @@ void draw(CvArr* img, int width, int height) {
         -1, -1, cvScalar(cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256)};
 
     // Mixing these two gives a nice effect
-    fillTiles(img, (void *) &state, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
+    fillTiles(img, (void *) &state, 1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 
     truchetGenericState state1 = {
         cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
         LINE_THICKNESS};
-    fillTiles(img, (void *) &state1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetArc);
+    fillTiles(img, (void *) &state1, 1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetArc);
 }
 
 int main( int argc, char** argv ) {

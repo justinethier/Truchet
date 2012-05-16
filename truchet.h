@@ -58,6 +58,6 @@ truchetFilledArcState *truchetFilledArcChangeState(truchetFilledArcState *state,
 void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tileH);
 
 // Fill an entire image using given function
-void fillTiles(CvArr* img, void *state, int width, int height, int x, int y, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int)));
+void fillTiles(CvArr* img, void *state, int overlay, int width, int height, int x, int y, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int)));
 
 #endif

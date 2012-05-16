@@ -160,18 +160,22 @@ void truchetFilledArc(CvArr* img, void *state, int x, int y, int tileW, int tile
 }
 
 // Fill an entire image using given function
-void fillTiles(CvArr* img, void *state, int width, int height, int x, int y, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int))){
+void fillTiles(CvArr* img, void *state, int overlay, int width, int height, int x, int y, int tileWidth, int tileHeight, void (funcPtr(CvArr*, void*, int, int, int, int))){
     int xinit = x, yinit = y;
 
-    // TODO: don't want an overlay each time, need to make it an option or something
-    IplImage *imgTmp = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 3);
+    IplImage *imgTmp = (IplImage *) img;
+    
+    if (overlay) imgTmp = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 3);
+
     for (y = yinit + tileHeight - tileHeight * 2; y < height + tileHeight; y += tileHeight){
         for (x = xinit + tileWidth - tileWidth * 2; x < width + tileWidth; x += tileWidth){
             (*funcPtr)(imgTmp, state, x, y, tileWidth, tileHeight);
         }
     }
 
-    OverlayImage(img, imgTmp, width, height, cvPoint(0, 0), cvScalar(0.5, 0.5, 0.5, 0.5), cvScalar(0.5, 0.5, 0.5, 0.5));
-    cvReleaseImage( &imgTmp );
+    if (overlay){
+        OverlayImage(img, imgTmp, width, height, cvPoint(0, 0), cvScalar(0.5, 0.5, 0.5, 0.5), cvScalar(0.5, 0.5, 0.5, 0.5));
+        cvReleaseImage( &imgTmp );
+    }
 }
 

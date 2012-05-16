@@ -29,7 +29,7 @@ void draw(CvArr* img, int width, int height) {
         strokeColor
     };
 
-    fillTiles(img, (void *) &state, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
+    fillTiles(img, (void *) &state, 1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 
 // TODO: extract this out into another example file
     int i, offset = TILE_WIDTH/2;
@@ -38,12 +38,12 @@ void draw(CvArr* img, int width, int height) {
       truchetGenericState state1 = {
           cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
           LINE_THICKNESS};
-      fillTiles(img, (void *) &state1, width, height, 0, 0, TILE_WIDTH * 2, TILE_HEIGHT * 2, &truchetArc);
+      fillTiles(img, (void *) &state1, 1, width, height, 0, 0, TILE_WIDTH * 2, TILE_HEIGHT * 2, &truchetArc);
 */
       state.generic.fgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
       state.bgColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
       state.strokeColor = cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256);
-      fillTiles(img, (void *) &state, width, height, offset, offset, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
+      fillTiles(img, (void *) &state, 1, width, height, offset, offset, TILE_WIDTH, TILE_HEIGHT, &truchetFilledArc);
 
     }
 }

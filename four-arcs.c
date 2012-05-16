@@ -46,7 +46,7 @@ void draw(CvArr* img, int width, int height) {
     truchetGenericState state1 = {
         cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
         LINE_THICKNESS};
-    fillTiles(img, (void *) &state1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFourArcs);
+    fillTiles(img, (void *) &state1, 0, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFourArcs);
 //    truchetFourArcs(img, (void *) &state1, 100, 100, TILE_WIDTH, TILE_HEIGHT);
 //    cvRectangle(img, cvPoint(100,100), cvPoint(200, 200), state1.fgColor, 1, 8, 0);
 }
