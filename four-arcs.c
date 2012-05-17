@@ -17,6 +17,8 @@ void truchetFourArcs(CvArr* img, void *state, int x, int y, int tileW, int tileH
 //      type = cvRandInt(&rng) % 4;
   int offset = 2; // Use 4 to look like an adobe logo
 
+  cvRectangle(img, cvPoint(x, y), cvPoint(x + tileW, y + tileH), cvScalar(255, 255, 255, 0), -1, 8, 0);
+
   cvEllipse(img, cvPoint((x + tileW/2), y), cvSize(tileW/2, tileH/offset), 0.0, 180.0, 360.0, color, thickness, CV_AA, 0);
   cvEllipse(img, cvPoint((x + tileW/2), y + tileH), cvSize(tileW/2, tileH/offset), 0.0, 0.0, 180.0, color, thickness, CV_AA, 0);
 
@@ -46,9 +48,17 @@ void draw(CvArr* img, int width, int height) {
     truchetGenericState state1 = {
         cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
         LINE_THICKNESS};
-    fillTiles(img, (void *) &state1, 0, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFourArcs);
-//    truchetFourArcs(img, (void *) &state1, 100, 100, TILE_WIDTH, TILE_HEIGHT);
-//    cvRectangle(img, cvPoint(100,100), cvPoint(200, 200), state1.fgColor, 1, 8, 0);
+    fillTiles(img, (void *) &state1, 1, width, height, 0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFourArcs);
+
+    truchetGenericState state2 = {
+        cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
+        LINE_THICKNESS};
+    fillTiles(img, (void *) &state2, 1, width, height, TILE_WIDTH/-2.0, 0, TILE_WIDTH, TILE_HEIGHT, &truchetFourArcs);
+
+//    truchetGenericState state3 = {
+//        cvScalar( cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256, cvRandInt(&rng)%256),
+//        LINE_THICKNESS};
+//    fillTiles(img, (void *) &state3, 1, width, height, 0, TILE_HEIGHT/-2.0, TILE_WIDTH, TILE_HEIGHT, &truchetFourArcs);
 }
 
 int main( int argc, char** argv ) {
